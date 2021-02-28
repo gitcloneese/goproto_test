@@ -1,0 +1,16 @@
+syntax="proto3";
+
+package goproto_test;
+
+
+message test{
+	string name = 1;
+	int32  age = 2;
+	repeated int32 weight = 3;
+}
+
+message PandaResponse{
+	int32  error_code = 1;
+	string error_msg = 2;
+}
+	
