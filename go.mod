@@ -1,5 +1,3 @@
-module goproto_test
+module github.com/gitcloneese/goproto_test
 
 go 1.14
-
-require github.com/golang/protobuf v1.4.3
