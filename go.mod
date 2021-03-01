@@ -1,4 +1,4 @@
-module github.com/gitcloneese/goproto_test/2
+module github.com/gitcloneese/testgprcproto
 
 go 1.14
 
