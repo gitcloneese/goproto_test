@@ -4,8 +4,12 @@
 package goproto_test
 
 import (
+	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	math "math"
 )
 
@@ -20,126 +24,298 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Test struct {
+type HelloReq struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Age                  int32    `protobuf:"varint,2,opt,name=age,proto3" json:"age,omitempty"`
-	Weight               []int32  `protobuf:"varint,3,rep,packed,name=weight,proto3" json:"weight,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *Test) Reset()         { *m = Test{} }
-func (m *Test) String() string { return proto.CompactTextString(m) }
-func (*Test) ProtoMessage()    {}
-func (*Test) Descriptor() ([]byte, []int) {
+func (m *HelloReq) Reset()         { *m = HelloReq{} }
+func (m *HelloReq) String() string { return proto.CompactTextString(m) }
+func (*HelloReq) ProtoMessage()    {}
+func (*HelloReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c161fcfdc0c3ff1e, []int{0}
 }
 
-func (m *Test) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Test.Unmarshal(m, b)
+func (m *HelloReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HelloReq.Unmarshal(m, b)
 }
-func (m *Test) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Test.Marshal(b, m, deterministic)
+func (m *HelloReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HelloReq.Marshal(b, m, deterministic)
 }
-func (m *Test) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Test.Merge(m, src)
+func (m *HelloReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HelloReq.Merge(m, src)
 }
-func (m *Test) XXX_Size() int {
-	return xxx_messageInfo_Test.Size(m)
+func (m *HelloReq) XXX_Size() int {
+	return xxx_messageInfo_HelloReq.Size(m)
 }
-func (m *Test) XXX_DiscardUnknown() {
-	xxx_messageInfo_Test.DiscardUnknown(m)
+func (m *HelloReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_HelloReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_Test proto.InternalMessageInfo
+var xxx_messageInfo_HelloReq proto.InternalMessageInfo
 
-func (m *Test) GetName() string {
+func (m *HelloReq) GetName() string {
 	if m != nil {
 		return m.Name
 	}
 	return ""
 }
 
-func (m *Test) GetAge() int32 {
-	if m != nil {
-		return m.Age
-	}
-	return 0
-}
-
-func (m *Test) GetWeight() []int32 {
-	if m != nil {
-		return m.Weight
-	}
-	return nil
-}
-
-type PandaResponse struct {
-	ErrorCode            int32    `protobuf:"varint,1,opt,name=error_code,json=errorCode,proto3" json:"error_code,omitempty"`
-	ErrorMsg             string   `protobuf:"bytes,2,opt,name=error_msg,json=errorMsg,proto3" json:"error_msg,omitempty"`
+type HelloResp struct {
+	Msg                  string   `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *PandaResponse) Reset()         { *m = PandaResponse{} }
-func (m *PandaResponse) String() string { return proto.CompactTextString(m) }
-func (*PandaResponse) ProtoMessage()    {}
-func (*PandaResponse) Descriptor() ([]byte, []int) {
+func (m *HelloResp) Reset()         { *m = HelloResp{} }
+func (m *HelloResp) String() string { return proto.CompactTextString(m) }
+func (*HelloResp) ProtoMessage()    {}
+func (*HelloResp) Descriptor() ([]byte, []int) {
 	return fileDescriptor_c161fcfdc0c3ff1e, []int{1}
 }
 
-func (m *PandaResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_PandaResponse.Unmarshal(m, b)
+func (m *HelloResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_HelloResp.Unmarshal(m, b)
 }
-func (m *PandaResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_PandaResponse.Marshal(b, m, deterministic)
+func (m *HelloResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_HelloResp.Marshal(b, m, deterministic)
 }
-func (m *PandaResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_PandaResponse.Merge(m, src)
+func (m *HelloResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_HelloResp.Merge(m, src)
 }
-func (m *PandaResponse) XXX_Size() int {
-	return xxx_messageInfo_PandaResponse.Size(m)
+func (m *HelloResp) XXX_Size() int {
+	return xxx_messageInfo_HelloResp.Size(m)
 }
-func (m *PandaResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_PandaResponse.DiscardUnknown(m)
+func (m *HelloResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_HelloResp.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_PandaResponse proto.InternalMessageInfo
+var xxx_messageInfo_HelloResp proto.InternalMessageInfo
 
-func (m *PandaResponse) GetErrorCode() int32 {
+func (m *HelloResp) GetMsg() string {
 	if m != nil {
-		return m.ErrorCode
+		return m.Msg
 	}
-	return 0
+	return ""
 }
 
-func (m *PandaResponse) GetErrorMsg() string {
+type NameReq struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NameReq) Reset()         { *m = NameReq{} }
+func (m *NameReq) String() string { return proto.CompactTextString(m) }
+func (*NameReq) ProtoMessage()    {}
+func (*NameReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c161fcfdc0c3ff1e, []int{2}
+}
+
+func (m *NameReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NameReq.Unmarshal(m, b)
+}
+func (m *NameReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NameReq.Marshal(b, m, deterministic)
+}
+func (m *NameReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NameReq.Merge(m, src)
+}
+func (m *NameReq) XXX_Size() int {
+	return xxx_messageInfo_NameReq.Size(m)
+}
+func (m *NameReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_NameReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NameReq proto.InternalMessageInfo
+
+func (m *NameReq) GetName() string {
 	if m != nil {
-		return m.ErrorMsg
+		return m.Name
+	}
+	return ""
+}
+
+type NameResp struct {
+	Msg                  string   `protobuf:"bytes,1,opt,name=msg,proto3" json:"msg,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *NameResp) Reset()         { *m = NameResp{} }
+func (m *NameResp) String() string { return proto.CompactTextString(m) }
+func (*NameResp) ProtoMessage()    {}
+func (*NameResp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_c161fcfdc0c3ff1e, []int{3}
+}
+
+func (m *NameResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_NameResp.Unmarshal(m, b)
+}
+func (m *NameResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_NameResp.Marshal(b, m, deterministic)
+}
+func (m *NameResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NameResp.Merge(m, src)
+}
+func (m *NameResp) XXX_Size() int {
+	return xxx_messageInfo_NameResp.Size(m)
+}
+func (m *NameResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_NameResp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_NameResp proto.InternalMessageInfo
+
+func (m *NameResp) GetMsg() string {
+	if m != nil {
+		return m.Msg
 	}
 	return ""
 }
 
 func init() {
-	proto.RegisterType((*Test)(nil), "goproto_test.test")
-	proto.RegisterType((*PandaResponse)(nil), "goproto_test.PandaResponse")
+	proto.RegisterType((*HelloReq)(nil), "goproto_test.HelloReq")
+	proto.RegisterType((*HelloResp)(nil), "goproto_test.HelloResp")
+	proto.RegisterType((*NameReq)(nil), "goproto_test.NameReq")
+	proto.RegisterType((*NameResp)(nil), "goproto_test.NameResp")
 }
 
 func init() { proto.RegisterFile("test.proto", fileDescriptor_c161fcfdc0c3ff1e) }
 
 var fileDescriptor_c161fcfdc0c3ff1e = []byte{
-	// 164 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x2c, 0x8e, 0xbf, 0x0a, 0xc2, 0x40,
-	0x0c, 0x87, 0xa9, 0xfd, 0x83, 0x0d, 0x0a, 0x92, 0x41, 0x0a, 0x22, 0x94, 0x4e, 0x9d, 0x5c, 0x7c,
-	0x04, 0xdd, 0x44, 0x90, 0xbc, 0x40, 0x39, 0x6d, 0x38, 0x1d, 0x7a, 0x29, 0x77, 0x07, 0xbe, 0xbe,
-	0x5c, 0xea, 0x94, 0xef, 0xf7, 0x0d, 0x1f, 0x01, 0x88, 0x1c, 0xe2, 0x69, 0xf6, 0x12, 0x05, 0x37,
-	0x56, 0x14, 0x86, 0xe4, 0xba, 0x2b, 0x14, 0xe9, 0x22, 0x42, 0xe1, 0xcc, 0xc4, 0x4d, 0xd6, 0x66,
-	0x7d, 0x4d, 0xca, 0xb8, 0x83, 0xdc, 0x58, 0x6e, 0x56, 0x6d, 0xd6, 0x97, 0x94, 0x10, 0xf7, 0x50,
-	0x7d, 0xf9, 0x63, 0xdf, 0xb1, 0xc9, 0xdb, 0xbc, 0x2f, 0xe9, 0xbf, 0xba, 0x1b, 0x6c, 0x1f, 0xc6,
-	0x8d, 0x86, 0x38, 0xcc, 0xe2, 0x02, 0xe3, 0x11, 0x80, 0xbd, 0x17, 0x3f, 0xbc, 0x64, 0x5c, 0xa2,
-	0x25, 0xd5, 0x6a, 0x2e, 0x32, 0x32, 0x1e, 0x60, 0x19, 0xc3, 0x14, 0xac, 0xf6, 0x6b, 0x5a, 0xab,
-	0xb8, 0x07, 0xfb, 0xac, 0xf4, 0xbd, 0xf3, 0x2f, 0x00, 0x00, 0xff, 0xff, 0x9a, 0xc5, 0x6f, 0x87,
-	0xb5, 0x00, 0x00, 0x00,
+	// 176 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0x49, 0x2d, 0x2e,
+	0xd1, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x49, 0xcf, 0x07, 0x33, 0xe2, 0x41, 0x62, 0x4a,
+	0x72, 0x5c, 0x1c, 0x1e, 0xa9, 0x39, 0x39, 0xf9, 0x41, 0xa9, 0x85, 0x42, 0x42, 0x5c, 0x2c, 0x79,
+	0x89, 0xb9, 0xa9, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x60, 0xb6, 0x92, 0x2c, 0x17, 0x27,
+	0x54, 0xbe, 0xb8, 0x40, 0x48, 0x80, 0x8b, 0x39, 0xb7, 0x38, 0x1d, 0x2a, 0x0f, 0x62, 0x2a, 0xc9,
+	0x72, 0xb1, 0xfb, 0x25, 0xe6, 0xa6, 0xe2, 0xd2, 0x2d, 0xc3, 0xc5, 0x01, 0x91, 0xc6, 0xa6, 0xd9,
+	0xa8, 0x83, 0x91, 0x8b, 0x1b, 0x6c, 0x78, 0x71, 0x6a, 0x51, 0x59, 0x6a, 0x91, 0x90, 0x2d, 0x17,
+	0x47, 0x70, 0x62, 0x65, 0x06, 0x48, 0x44, 0x48, 0x4c, 0x0f, 0xd9, 0x99, 0x7a, 0x30, 0x37, 0x4a,
+	0x89, 0x63, 0x15, 0x2f, 0x2e, 0x50, 0x62, 0x10, 0xb2, 0xe2, 0x62, 0x0f, 0x4e, 0xac, 0x04, 0xd9,
+	0x2b, 0x24, 0x8a, 0xaa, 0x0a, 0xea, 0x44, 0x29, 0x31, 0x6c, 0xc2, 0x20, 0xbd, 0x49, 0x6c, 0x60,
+	0x61, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x85, 0x7a, 0x00, 0xb9, 0x29, 0x01, 0x00, 0x00,
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// HelloserverClient is the client API for Helloserver service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type HelloserverClient interface {
+	Sayhello(ctx context.Context, in *HelloReq, opts ...grpc.CallOption) (*HelloResp, error)
+	Sayname(ctx context.Context, in *NameReq, opts ...grpc.CallOption) (*NameResp, error)
+}
+
+type helloserverClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewHelloserverClient(cc grpc.ClientConnInterface) HelloserverClient {
+	return &helloserverClient{cc}
+}
+
+func (c *helloserverClient) Sayhello(ctx context.Context, in *HelloReq, opts ...grpc.CallOption) (*HelloResp, error) {
+	out := new(HelloResp)
+	err := c.cc.Invoke(ctx, "/goproto_test.Helloserver/Sayhello", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *helloserverClient) Sayname(ctx context.Context, in *NameReq, opts ...grpc.CallOption) (*NameResp, error) {
+	out := new(NameResp)
+	err := c.cc.Invoke(ctx, "/goproto_test.Helloserver/Sayname", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// HelloserverServer is the server API for Helloserver service.
+type HelloserverServer interface {
+	Sayhello(context.Context, *HelloReq) (*HelloResp, error)
+	Sayname(context.Context, *NameReq) (*NameResp, error)
+}
+
+// UnimplementedHelloserverServer can be embedded to have forward compatible implementations.
+type UnimplementedHelloserverServer struct {
+}
+
+func (*UnimplementedHelloserverServer) Sayhello(ctx context.Context, req *HelloReq) (*HelloResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Sayhello not implemented")
+}
+func (*UnimplementedHelloserverServer) Sayname(ctx context.Context, req *NameReq) (*NameResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Sayname not implemented")
+}
+
+func RegisterHelloserverServer(s *grpc.Server, srv HelloserverServer) {
+	s.RegisterService(&_Helloserver_serviceDesc, srv)
+}
+
+func _Helloserver_Sayhello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelloReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HelloserverServer).Sayhello(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/goproto_test.Helloserver/Sayhello",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HelloserverServer).Sayhello(ctx, req.(*HelloReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Helloserver_Sayname_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(NameReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(HelloserverServer).Sayname(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/goproto_test.Helloserver/Sayname",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(HelloserverServer).Sayname(ctx, req.(*NameReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _Helloserver_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "goproto_test.Helloserver",
+	HandlerType: (*HelloserverServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Sayhello",
+			Handler:    _Helloserver_Sayhello_Handler,
+		},
+		{
+			MethodName: "Sayname",
+			Handler:    _Helloserver_Sayname_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "test.proto",
 }
